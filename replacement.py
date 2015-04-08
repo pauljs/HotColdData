@@ -38,6 +38,8 @@ class System:
         hot.query("insert into (%s) VALUES (%s, %s)", table, key, data)
         cold.table(table).put(key, 'default:data' : data)
 
+
+    #TODO error conditions
     def query(self, table, key):
         if not self.replacement_algorithm.contains(key):
             val = self.replacement_algorithm.enqueueLRU(key)
@@ -51,6 +53,7 @@ class System:
 
     def delete(self, table, key):
         if self.replacement_algorithm.contains(key):
+            self.replacement_algorithm.delete(key)
             hot.query("delete from (%s) where id = (%s)", table, key)
         cold.table(table).delete(key)
 

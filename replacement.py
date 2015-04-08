@@ -7,7 +7,7 @@ class MyHbase:
     def __init__(self):
         self.hbase = Hbase(DB_NAME)
     def add(self, key, item):
-        
+       pass 
 
 class MyDB:
     def __init__(self):

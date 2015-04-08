@@ -1,7 +1,7 @@
 import happybase
 import json
 from DB import DB, DB_NAME, Hbase
-from algorithm import LRU
+from LRUQueue import LRUQueue
 
 class MyHbase:
     def __init__(self):
@@ -29,7 +29,7 @@ class System:
 
     def setReplacementAlgorithm(self, name):
         if name == 'LRU':
-            self.replacement_algorithm = LRUQ()
+            self.replacement_algorithm = LRUQueue()
     
     def insert(self, table, key, data):
         val = self.replacement_algorithm.enqueueLRU(key)

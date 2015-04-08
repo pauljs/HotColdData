@@ -23,6 +23,18 @@ class PriorityQueueContain(PriorityQueue):
                     return True
             return False
 
+            itemLRU = -1
+
+            if(len(self.queue) == self.maxsize):
+                print "blah"
+                item = self.get() 
+                itemLRU = item.getId()
+            newNode = Node(id)
+            self.put(newNode)
+            print id
+            return itemLRU
+
+
 
 class LRUQueue:
 	
@@ -31,41 +43,31 @@ class LRUQueue:
 	
     def enqueueLRU(self, id):
         itemLRU = -1
+
         if(self.queue.full()):
-            item = self.queue.get() 
-            itemLRU = item.getId()
-        newNode = Node(id)
-        self.queue.put(newNode)
+            itemLRU = self.queue.get() 
+        self.queue.put((int(time.time()*100000), id))
+
+        print id
         return itemLRU
 
     def contains(self, id):
-        return self.queue.__contains__(id)
-
+	for tuple in self.queue.queue:
+           if(tuple[1] == id):
+               return True
+        return False
+ 
     def remove(self, id):
 	return self.queue.__remove__(id)
 
-class Node:
-    def __init__(self, id):
-        self.id = id
-        self.time = int(time.time()*100000)
-    def _cmp_(self, other):
-        return cmp(self.time, other.time)
-
-    def getId(self):
-        return self.id
-    def updateTime(self):
-        self.time = int(time.time() * 100000)
-
 '''Used for Testing Purposes'''
 def main():
-    queue = LRUQueue(3)
-    for i in range(1, 6):
+    queue = LRUQueue(5)
+    for i in range(1, 20):
+	print i
         queue.enqueueLRU(i)
-    for i in range(1, 6):
+    for i in range(1, 20):
         print i, queue.contains(i)
-    queue.remove(5)
-    for i in range(1, 6):
-        print i, queue.contains(i)   
 
 if __name__ == '__main__':
 	main()

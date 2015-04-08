@@ -7,7 +7,7 @@ class MyHbase:
     def __init__(self):
         self.hbase = Hbase(DB_NAME)
     def add(self, key, item):
-       pass 
+        pass        
 
 class MyDB:
     def __init__(self):
@@ -20,23 +20,24 @@ class System:
         self.cold = Hbase(DB_NAME)
 
         try:
-            self.cold.get_connection().create_table('twitter', {'default':dict{}})
+            self.cold.get_connection().create_table('twitter', {'default':dict({})})
         except happybase.hbase.ttypes.AlreadyExists:
             pass
-        self.hot.cursor.execute("drop table if exists twitter")
-        self.hot.cursor.execute("create table twitter(id bigint, text varchar(280))")
+        self.hot.cursor().execute("drop table if exists twitter")
+        self.hot.cursor().execute("create table twitter(id bigint, text varchar(280))")
         self.hot.connection().commit()
 
     def setReplacementAlgorithm(self, name):
         if name == 'LRU':
-            self.replacement_algorithm = LRUQueue()
+            self.replacement_algorithm = LRUQueue(10)
     
     def insert(self, table, key, data):
         val = self.replacement_algorithm.enqueueLRU(key)
         if val != -1:
-            hot.query("delete from (%s) where id = (%s)", table, val)
-        hot.query("insert into (%s) VALUES (%s, %s)", table, key, data)
-        cold.table(table).put(key, 'default:data' : data)
+            self.hot.cursor().execute("delete from " + table + " where id = " + str(val) + ";")
+        self.hot.cursor().execute("insert into " + table  + " VALUES (%s, %s)", (key, data))
+        self.hot.connection().commit()
+        self.cold.table(table).put(str(key), {'default:data' : data.encode('utf-8').strip()})
 
 
     #TODO error conditions
@@ -44,17 +45,18 @@ class System:
         if not self.replacement_algorithm.contains(key):
             val = self.replacement_algorithm.enqueueLRU(key)
             if val != -1:
-                hot.query("delete from (%s) where id = (%s)", table, val)
-            data = cold.table(table).row(key)['default:data']
-            hot.query("insert into (%s) VALUES (%s, %s)", table, key, data)
-
-        return hot.query("Select * from (%s) where id = (%s)", table, key)
-
+                self.hot.cursor().execute("delete from " + table + " where id = " + val + ";")
+            data = self.cold.table(table).row(key)['default:data']
+            self.hot.cursor().execute("insert into %s VALUES (%s, %s)", (table, key, data))
+        
+        self.hot.connection().commit()
+        hot.cursor().execute("Select * from %s where id = %s", (table, key))
+        return hot.cursor().fetchall()
 
     def delete(self, table, key):
         if self.replacement_algorithm.contains(key):
             self.replacement_algorithm.delete(key)
-            hot.query("delete from (%s) where id = (%s)", table, key)
+            hot.cursor().execute("delete from %s where id = %s", (table, key))
         cold.table(table).delete(key)
 
     def update(self, table, key, data):
@@ -70,6 +72,9 @@ def main():
             tweets.append(json.loads(line))
         except:
             pass
+    for t in tweets:
+        s.insert('twitter', t['id'], t['text'])
+        #print s.hot.query("select * from twitter")
 
     
 

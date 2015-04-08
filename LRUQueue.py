@@ -58,16 +58,16 @@ class LRUQueue:
         return False
  
     def remove(self, id):
-	return self.queue.__remove__(id)
+	    return self.queue.__remove__(id)
 
-'''Used for Testing Purposes'''
+
 def main():
-    queue = LRUQueue(5)
-    for i in range(1, 20):
-	print i
+    queue = LRUQueue(10)
+    for i in range(1, 100):
         queue.enqueueLRU(i)
-    for i in range(1, 20):
+    for i in range(1, 100):
         print i, queue.contains(i)
+   # queue.remove(5)
 
 if __name__ == '__main__':
 	main()

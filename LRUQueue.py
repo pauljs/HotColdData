@@ -15,6 +15,15 @@ class PriorityQueueContain(PriorityQueue):
                     return True
             return False
 
+    def __remove__(self, id):
+	 with self.mutex:
+            for node in self.queue:
+                if(id == node.getId()):
+                    self.queue.remove(node) 
+                    return True
+            return False
+
+
 class LRUQueue:
 	
     def __init__(self, maxsize):
@@ -31,6 +40,9 @@ class LRUQueue:
 
     def contains(self, id):
         return self.queue.__contains__(id)
+
+    def remove(self, id):
+	return self.queue.__remove__(id)
 
 class Node:
     def __init__(self, id):
@@ -51,7 +63,9 @@ def main():
         queue.enqueueLRU(i)
     for i in range(1, 6):
         print i, queue.contains(i)
-    
+    queue.remove(5)
+    for i in range(1, 6):
+        print i, queue.contains(i)   
 
 if __name__ == '__main__':
 	main()

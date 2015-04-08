@@ -21,7 +21,8 @@ class LRUQueue:
 	def enqueueLRU(self, id):
 		itemLRU = -1
 		if(self.queue.full()):
-			itemLRU = self.queue.get()
+			item = self.queue.get() 
+			itemLRU = item.getId()
 		newNode = Node(id)
 		self.queue.put(newNode)
 		return itemLRU

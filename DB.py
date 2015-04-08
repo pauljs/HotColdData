@@ -1,5 +1,6 @@
 import psycopg2
 import sqlite3
+import memcache
 import happybase
 
 DB_NAME = 'hot_cold_data'
@@ -42,3 +43,6 @@ class Hbase:
 
 	def table(self, table):
 		return self.connection.table(table)
+
+
+

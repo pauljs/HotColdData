@@ -45,10 +45,9 @@ class LRUQueue:
         itemLRU = -1
 
         if(self.queue.full()):
-            itemLRU = self.queue.get() 
+            itemLRU = self.queue.get()[1] 
         self.queue.put((int(time.time()*100000), id))
 
-        print id
         return itemLRU
 
     def contains(self, id):

@@ -4,9 +4,13 @@ from Queue import Queue
 import time
 import calendar
 from abc import ABCMeta
+import random
 '''class for least recently used algorithm'''
 
 class ReplacementQueue(object):
+
+    def isFull(self):
+        pass
 
     def enqueue(self, id):
         pass 
@@ -15,6 +19,9 @@ class ReplacementQueue(object):
         pass
 
     def contains(self, id):
+        pass
+
+    def printContents(self):
         pass
 
 class PriorityQueueContain(PriorityQueue):
@@ -26,6 +33,10 @@ class PriorityQueueContain(PriorityQueue):
                     self.queue.remove(tuple) 
                     return True
             return False
+    def __printContents__(self):
+        print 'Length: ' + str(len(self.queue))
+        for id in self.queue:
+            print id
 
 class QueueContain(Queue):
 
@@ -45,18 +56,25 @@ class QueueContain(Queue):
                    return True
            return False
 
+    def __printContents__(self):
+        print 'Length: ' + str(len(self.queue))
+        for id in self.queue:
+            print id
 
 class LRUQueue:
 	
     def __init__(self, maxsize):
         self.queue = PriorityQueueContain(maxsize)
 
+    def isFull(self):
+        return self.queue.full()
+
     def enqueue(self, id):
-        item = -1
-        if(self.queue.full()):
+        item = (-1, -1)
+        if(self.isFull()):
             item = self.queue.get() 
         self.queue.put((int(time.time()*100000), id))
-        return item
+        return item[1]
 
     def contains(self, id):
         isContained = self.delete(id)
@@ -67,15 +85,20 @@ class LRUQueue:
     def delete(self, id):
 	return self.queue.__delete__(id)
 
+    def printContents(self):
+        self.queue.__printContents__()
 
 class FIFOQueue(ReplacementQueue):
 
     def __init__(self, maxsize):
         self.queue = QueueContain(maxsize)
 
+    def isFull(self):
+        return self.queue.full()
+
     def enqueue(self, id):
         item = -1
-        if(self.queue.full()):
+        if(self.isFull()):
             item = self.queue.get() 
         self.queue.put(id)
         return item
@@ -86,7 +109,10 @@ class FIFOQueue(ReplacementQueue):
     def delete(self, id):
         return self.queue.__delete__(id)
 
-class ClockIndexQueue(ReplacementQueue):
+    def printContents(self):
+        self.queue.__printContents__()
+
+class ClockStaticQueue(ReplacementQueue):
 
     def __init__(self, maxsize):
         self.maxsize = maxsize
@@ -96,12 +122,15 @@ class ClockIndexQueue(ReplacementQueue):
         self.clock = [None] * maxsize
         self.hand = 0
 
+    def isFull(self):
+        return not self.queueTracker.empty()
+
     def incrementHand(self):
         self.hand = (self.hand + 1) % self.maxsize
 
     def enqueue(self, id):
-        item = -1
-        if(not self.queueTracker.empty()):
+        item = (-1, -1)
+        if(self.isFull()):
             nextEmptyIndex = self.queueTracker.get()
             self.clock[nextEmptyIndex] = (1, id)
         elif(self.contains(id)):
@@ -119,7 +148,7 @@ class ClockIndexQueue(ReplacementQueue):
             item = self.clock[self.hand][1]
             self.clock[self.hand] = (1, id)
             self.incrementHand()
-        return item
+        return item[1]
 
     def delete(self, id):
         for i in range(0, self.maxsize):
@@ -143,7 +172,7 @@ class ClockIndexQueue(ReplacementQueue):
         for tuple in self.clock:
              print tuple
 
-class ClockRemoveQueue(ReplacementQueue):
+class ClockDynamicQueue(ReplacementQueue):
 
     def __init__(self, maxsize):
         self.maxsize = maxsize
@@ -160,7 +189,7 @@ class ClockRemoveQueue(ReplacementQueue):
         return len(self.clock) == self.maxsize
 
     def enqueue(self, id):
-        item = -1
+        item = (-1, -1)
         if(not self.isFull()):
             self.clock.append((1, id))
         elif(self.contains(id)):
@@ -173,7 +202,7 @@ class ClockRemoveQueue(ReplacementQueue):
             item = self.clock[self.hand][1]
             self.clock[self.hand] = (1, id)
             self.incrementHand()
-        return item
+        return item[1]
 
     def delete(self, id):
         for i in range(0, self.maxsize):
@@ -196,41 +225,72 @@ class ClockRemoveQueue(ReplacementQueue):
         for tuple in self.clock:
             print tuple
 
+class RandomQueue(ReplacementQueue):
+
+    def __init__(self, maxsize):
+        self.maxsize = maxsize
+        self.clock = []
+
+    def isFull(self):
+        return len(self.clock) == self.maxsize
+
+    def enqueue(self, id):
+        item = -1
+        if(not self.isFull()):
+            self.clock.append(id)
+        elif(self.contains(id)):
+            pass
+        else:
+            '''clock is full'''
+            removalIndex = random.randint(0, self.maxsize - 1)
+            item = self.clock[removalIndex]
+            del self.clock[removalIndex]
+            self.clock.append(id)
+        return item
+
+    def delete(self, id):
+        for i in range(0, self.maxsize):
+            if(self.clock[i] == id):
+                del self.clock[i]
+                return True
+        return False
+
+    def contains(self, id):
+        for temp in self.clock:
+            if(temp == id):
+                return True
+        return False
+
+    def printContents(self):
+        print "Length: " + str(len(self.clock))
+        for i in range(0, len(self.clock)):
+            print self.clock[i]
 
 '''Used for Testing Purposes'''
 def main():
-    queue = ClockIndexQueue(4)
-    queue.enqueue(1)
-    queue.enqueue(2)
-    queue.enqueue(3) 
-    queue.enqueue(4) 
-    queue.enqueue(1) 
-    queue.enqueue(2)
-    queue.printContents()
+    queue = FIFOQueue(4)
     print "\n"
-    queue.enqueue(5) 
-    queue.printContents()
-    queue.enqueue(1) 
-    queue.enqueue(2) 
+    print queue.printContents() 
+    queue.enqueue(1)
+    print "\n"
+    print queue.printContents() 
+    queue.enqueue(2)
+    print "\n"
+    print queue.printContents() 
     queue.enqueue(3) 
+    print "\n"
+    print queue.printContents() 
     queue.enqueue(4) 
-    queue.enqueue(5) 
-    queue.printContents()
-
-    queue.delete(2)
-    queue.printContents()
-    queue.delete(3)
-    queue.printContents()
-    '''for i in range(1, 20):
-	print i
-        queue.enqueue(i)
-    queue.contains(15)
-    queue.enqueue(20)
-    for i in range(1, 21):
-        print i, queue.contains(i)
-    print queue.delete(20)
-    print queue.contains(20)
-    '''
+    print "\n"
+    print queue.printContents() 
+    queue.enqueue(5)  
+    print "\n"
+    print queue.printContents() 
+    print queue.delete(1)
+    print queue.delete(3)
+    print queue.printContents()
+    queue.enqueue(6)
+    print "\n", queue.printContents()
 
 if __name__ == '__main__':
 	main()

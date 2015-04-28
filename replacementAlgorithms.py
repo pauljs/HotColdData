@@ -9,18 +9,41 @@ import random
 
 class ReplacementQueue(object):
 
+    '''
+    Checks whether the ReplacementQueue is full.
+    Returns True if it is full and false otherwise.
+    '''
     def isFull(self):
         pass
 
+    '''
+    Adds object to this ReplacementQueue. If ReplacementQueue
+    is full then new object will replace an old object
+    based on the replacement algorithm. If the ReplacementQueue
+    is not full, then will add the new object, without removing another,
+    depending on the ReplacementQueue algorithm for enqueue'''
     def enqueue(self, id):
         pass 
 
+    '''
+    Deletes an object if it is in the ReplacementQueue.
+    Returns True if object was deleted in the ReplacementQueue, else False.
+    '''
     def delete(self, id):
         pass
 
+    '''
+    Checks to see if object is in the ReplacementQueue.
+    Returns True if so, else False.
+    '''
     def contains(self, id):
         pass
 
+    '''
+    Prints the contents of the ReplacementQueue
+    as well as other informational data pertaining to each
+    replacement algorithm
+    '''
     def printContents(self):
         pass
 

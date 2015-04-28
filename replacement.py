@@ -28,21 +28,24 @@ class System:
     def setReplacementAlgorithm(self, name, size):
         if name == 'LRU':
             self.replacement_algorithm = LRUQueue(size)
+        elif name == 'FIFO':
+            self.replacement_algorithm = FIFOQueue(size)
+        elif name == 'CLOCK1':
+            self.replacement_algorithm = ClockStaticQueue(size)
+        elif name == 'CLOCK2':
+            self.replacement_algorithm = ClockDynamicQueue(size)
+        elif name == 'RANDOM':
+            self.replacement_algorithm = RandomQueue(size)
+        else:
+            print 'Error: Choose a different replacement algorithm'
     
     def insert(self, table, data):
         val = self.replacement_algorithm.enqueueLRU(data['key'])
         if val != -1:
-            self.hot.cursor().execute("delete from " + table + " where key = " + str(val) + ";")
-        query = "insert into " + table + " VALUES ("
-        for d in data:
-            query += data[d] + " ,"
-        query = query[:len(query)-1] + ");"
-        self.hot.cursor().execute(query)
-        self.hot.connection().commit()
-        dict = {}
-        for key in data:
-            dict['default:' + key] = data[key]
-        self.cold.table(table).put(str(data['key']), dict)
+            self.hot.delete(table, str(val))
+        self.hot.insert(table, data)
+        self.hot.commit()
+        self.cold.insert(table, data['key'], data)
 	
 
     #TODO error conditions
@@ -50,33 +53,22 @@ class System:
         if not self.replacement_algorithm.contains(key):
             val = self.replacement_algorithm.enqueueLRU(key)
             if val != -1:
-                self.hot.cursor().execute("delete from " + table + " where key = " + val + ";")
-            data = self.cold.table(table).row(key)
-            query = "insert into " + table + " VALUES ("
-            for d in data:
-                query += data[d] + " ,"
-            query = query[:len(query)-1] + ");"
-            self.hot.cursor().execute(query)
-            self.hot.connection().commit()
-        select = "SELECT " 
-        for c in cols:
-            select += c + ","
-        select = select[:len(select)-1] + " from " + table  + " where key = " + key
-        return self.hot.query(select)
+                self.hot.delete(table, str(val))
+                data = self.cold.table(table).row(key)
+                self.hot.insert(table, data)
+                self.hot.connection().commit()
+        return self.hot.select(table, key, cols)
 
     def delete(self, table, key):
         if self.replacement_algorithm.delete(key):
-            hot.cursor().execute("DELETE from " + table + " where key = " + key + ";")
-        cold.table(table).delete(key)
+            self.hot.delete(table, key)
+        self.cold.delete(key)
 
     def update(self, table, key, data):
         if self.replacement_algorithm.contains(key):
-            query = "UPDATE " + table + " set " 
-            for d in data:
-                query += d + " = " + data[d] + ","
-            query = query[:len(query)-1] + " where key = " + key + ";"
-            self.hot.cursor().execute(query)
+            self.hot.update(table, key, data)
             self.hot.connection().commit()
+        self.cold.update(table, key, data)
 
 def main():
     s = System()
@@ -86,8 +78,6 @@ def main():
         s.insert('test', {'key': str(i), 'text': "'helloworld'"})
     print s.query('test', '5', ['key', 'text'])
     s.delete('test', '5')
-
-
 
 if __name__ == '__main__':
     main()

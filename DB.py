@@ -5,6 +5,9 @@ import happybase
 
 DB_NAME = 'hot_cold_data'
 
+'''
+postgreSQL hooks
+'''
 class DB:
     def __init__(self, db_name):
         try:
@@ -13,6 +16,7 @@ class DB:
             print "I am unable to connect to the database"
             exit()
         self.cur = self.conn.cursor()
+
 
     def cursor(self):
         return self.cur
@@ -30,6 +34,8 @@ class DB:
         self.conn.commit()
 
     def insert(self, table, data):
+        if not data:
+            raise Exception('Error:cannot insert nothing')
         q = "insert into " + table + " VALUES ("
         for d in data:
             q += data[d] + ' ,'
@@ -38,9 +44,12 @@ class DB:
 
     def select(self, table, key, cols):
         q = 'Select '
-        for c in cols:
-            q += c + ','
-        q = q[:len(q) - 1] + ' from ' + table + ' where key = ' + key + ';'
+        if not cols:
+            q += '*'
+        else:
+            for c in cols:
+                q += c + ','
+            q = q[:len(q) - 1] + ' from ' + table + ' where key = ' + key + ';'
         return self.query(q)
 
     def update(self, table, key, data):
@@ -56,8 +65,7 @@ class DB:
 
 
 '''
-Tutorial:
-https://happybase.readthedocs.org/en/happybase-0.4/tutorial.html
+HBase Hooks
 '''
 class Hbase:
     def __init__(self, db_name):
@@ -82,5 +90,8 @@ class Hbase:
     def update(self, table, key, data):
         self.insert(table, key, data)
 
-    def delete(self, key):
+    def delete(self, table, key):
         self.table(table).delete(key)
+
+    def select(self, table, key):
+        return self.table(table).row(key)

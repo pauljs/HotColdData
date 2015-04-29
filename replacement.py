@@ -2,6 +2,7 @@ import happybase
 import json
 from DB import DB, DB_NAME, Hbase
 from replacementAlgorithms import LRUQueue
+import sys
 
 '''
 Main Client Access Point
@@ -29,7 +30,7 @@ class System:
             self.cold.get_connection().create_table(name, {'default':dict()})
         self.hot.cursor().execute("drop table if exists " + name + ";")
         create_table = "create table " + name + "("
-        for key in cols:
+        for key in sorted(cols):
             create_table += key + ' ' + cols[key] + ","
         create_table = create_table[:len(create_table) -1] + ");"
         self.hot.cursor().execute(create_table)
@@ -53,6 +54,7 @@ class System:
     @exception: Raised if user specifies an incorrect replacement algorithm
     '''
     def setReplacementAlgorithm(self, name, size):
+        self.size = size
         if name == 'LRU':
             self.replacement_algorithm = LRUQueue(size)
         elif name == 'FIFO':
@@ -73,6 +75,12 @@ class System:
     @exception: raised if user fails to define key in their data
     '''
     def insert(self, table, data):
+        #For testing purposes only
+        if self.size == 0:
+            self.cold.insert(table, data['key'], data)
+            return
+        #end testing purposes
+
         if 'key' not in data:
             raise Exception ('Error: Must define a key')
         val = self.replacement_algorithm.enqueue(data['key'])
@@ -90,7 +98,15 @@ class System:
     @return: tuple of data 
     '''
     def query(self, table, key, cols):
+        key = str(key)
+        #for testing purposes only
+        if self.size == 0:
+            return self.cold.select(table, key)
+        #end testing purposes
+        
         if not self.replacement_algorithm.contains(key):
+            sys.stdout.write('miss')
+            sys.stdout.flush()
             val = self.replacement_algorithm.enqueue(key) #returns -1 if the queue is full, the key of the data if not
             if val != -1:
                 self.hot.delete(table, str(val))
@@ -105,6 +121,12 @@ class System:
     @param key: key of row to be deleted
     '''
     def delete(self, table, key):
+        key = str(key)
+        #for testing purposes
+        if self.size == 0:
+            self.cold.delete(table, key)
+            return
+        #end testing purposes
         if self.replacement_algorithm.delete(key):
             self.hot.delete(table, key)
             self.hot.commit()
@@ -118,8 +140,14 @@ class System:
     @exception: thrown if the user attempts to update key
     '''
     def update(self, table, key, data):
+        key = str(key)
         if 'key' in data:
             raise Exception('Cannot update key')
+        #testing purposes only
+        if self.size == 0:
+            self.cold.update(table, key, data)
+            return
+        #end testing purposes
         self.cold.update(table, key, data)
         if self.replacement_algorithm.contains(key):
             self.hot.update(table, key, data)
@@ -129,7 +157,6 @@ class System:
             if val != -1:
                 self.hot.delete(table, str(val))
             data = self.stripColumnFamily(self.cold.select(table, key))
-            print data
             self.hot.insert(table, data)
             self.hot.commit()
     '''

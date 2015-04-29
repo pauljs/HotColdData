@@ -19,41 +19,41 @@ class Test:
         #self.system.query('customer',  random.randint(0, NUM_CUSTOMERS - 1), ['C_FNAME', 'C_LNAME'])
 
         for i in range(0 , 1000):
-            self.system.query('item', random.randint(0, 1), ['key', 'I_THUMBNAIL'])
-            self.system.query('item', random.randint(0, 1), ['key', 'I_THUMBNAIL'])
+            self.system.query('item', str(random.randint(0, 1)), ['key', 'I_THUMBNAIL'])
+            self.system.query('item', str(random.randint(0, 1)), ['key', 'I_THUMBNAIL'])
 
-            self.system.query('item', random.randint(0, 1), ['key', 'i_title'])
-            self.system.query('item', random.randint(0, 1), [])
-        #self.system.query('author', random.randint(0, NUM_AUTHORS), ['A_FNAME', 'A_LNAME'])
+            self.system.query('item', str(random.randint(0, 1)), ['key', 'i_title'])
+            self.system.query('item', str(random.randint(0, 1)), [])
+        #self.system.query('author', str(random.randint(0, NUM_AUTHORS)), ['A_FNAME', 'A_LNAME'])
 
-        #self.system.query('author', random.randint(0, NUM_AUTHORS), []) #[] is for select *
+        #self.system.query('author', str(random.randint(0, NUM_AUTHORS)), []) #[] is for select *
 
-        #self.system.query('author', random.randint(0, NUM_AUTHORS), [])
-            #self.system.query('item', random.randint(0, NUM_ITEMS - 1), [])
+        #self.system.query('author', str(random.randint(0, NUM_AUTHORS)), [])
+            #self.system.query('item', str(random.randint(0, NUM_ITEMS - 1)), [])
 
-            #self.system.query('item', random.randint(0, NUM_ITEMS - 1), [])
-        #self.system.query('author', random.randint(0, NUM_AUTHORS), [])
+            #self.system.query('item', str(random.randint(0, NUM_ITEMS - 1)), [])
+        #self.system.query('author', str(random.randint(0, NUM_AUTHORS)), [])
         
-#        self.system.query('customer',  random.randint(0, NUM_CUSTOMERS - 1), ['C_UNAME'])
+#        self.system.query('customer',  str(random.randint(0, NUM_CUSTOMERS - 1)), ['C_UNAME'])
         
-#        self.system.query('customer',  random.randint(0, NUM_CUSTOMERS - 1), ['C_PASSSWD'])
+#        self.system.query('customer',  str(random.randint(0, NUM_CUSTOMERS - 1)), ['C_PASSSWD'])
 
-#        self.system.query('customer',  random.randint(0, NUM_CUSTOMERS - 1), ['key'])
+#        self.system.query('customer',  str(random.randint(0, NUM_CUSTOMERS - 1)), ['key'])
 
-        #self.system.query('orders',  random.randint(0, NUM_ORDERS - 1), [])
-#        self.system.query('customer',  random.randint(0, NUM_CUSTOMERS - 1), [])
+        #self.system.query('orders',  str(random.randint(0, NUM_ORDERS - 1)), [])
+#        self.system.query('customer',  str(random.randint(0, NUM_CUSTOMERS - 1)), [])
 
-        #self.system.query('order_line',  random.randint(0, NUM_ORDERS - 1), [])
+        #self.system.query('order_line',  str(random.randint(0, NUM_ORDERS - 1)), [])
         #UNCERTAIN ON NUMBER!!!
 
         #self.system.query('shopping_cart', str(random.randint(0, NUM_ORDERS - 1)), [])
         #UNCERTAIN ON NUMBER!!!
 
-#        self.system.query('customer',  random.randint(0, NUM_CUSTOMERS - 1), ['C_DISCOUNT'])
+#        self.system.query('customer',  str(random.randint(0, NUM_CUSTOMERS - 1)), ['C_DISCOUNT'])
 
-#        self.system.query('customer',  random.randint(0, NUM_CUSTOMERS - 1), ['C_ADDR_ID'])
+#        self.system.query('customer',  str(random.randint(0, NUM_CUSTOMERS - 1)), ['C_ADDR_ID'])
 
-        #self.system.query('item', random.randint(0, NUM_ITEMS - 1), ['I_STOCK'])
+        #self.system.query('item', str(random.randint(0, NUM_ITEMS - 1)), ['I_STOCK'])
 
         #self.system.query('address', str(random.randint(0, NUM_ADDRESSES - 1)), ['ADDR_CO_ID'])
 
@@ -63,7 +63,7 @@ class Test:
 
         #self.system.query('address', str(random.randint(0, NUM_ADDRESSES - 1)), ['key'])
 
-        #self.system.query('orders',  random.randint(0, NUM_ORDERS - 1), ['key'])
+        #self.system.query('orders',  str(random.randint(0, NUM_ORDERS - 1)), ['key'])
         
         #self.system.query('shopping_cart_line', str(random.randint(0, NUM_ORDERS - 1)), ['SCL_QTY'])
         #UNCERTAIN ON NUMBER

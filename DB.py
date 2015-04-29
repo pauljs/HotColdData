@@ -2,8 +2,8 @@ import psycopg2
 import sqlite3
 import memcache
 import happybase
-
-DB_NAME = 'hot_cold_data'
+'''sean's DB called: hot_cold_data'''
+DB_NAME = 'pauljs_hot_cold_data'
 
 '''
 postgreSQL hooks

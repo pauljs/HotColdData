@@ -25,7 +25,7 @@ class Test:
         
         self.system.query('customer',  random.randint(0, NUM_CUSTOMERS - 1), ['C_UNAME'])
         
-        self.system.query('customer',  random.randint(0, NUM_CUSTOMERS - 1), ['password'])
+        self.system.query('customer',  random.randint(0, NUM_CUSTOMERS - 1), ['C_PASSWD'])
 
         self.system.query('customer',  random.randint(0, NUM_CUSTOMERS - 1), ['key'])
 
@@ -35,14 +35,14 @@ class Test:
         self.system.query('order_line',  random.randint(0, NUM_ORDERS_LINES - 1), [])
         #UNCERTAIN ON NUMBER!!!
 
-        self.system.query('shopping_cart', str(random.randint(0, NUM_SHOPPING_CARTS)), [])
+        self.system.query('shopping_cart', str(random.randint(0, NUM_ORDERS - 1)), [])
         #UNCERTAIN ON NUMBER!!!
 
         self.system.query('customer',  random.randint(0, NUM_CUSTOMERS - 1), ['C_DISCOUNT'])
 
-        self.system.query('customer',  random.randint(0, NUM_CUSTOMERS - 1), ['c_ADDR_ID'])
+        self.system.query('customer',  random.randint(0, NUM_CUSTOMERS - 1), ['C_ADDR_ID'])
 
-        self.system.query('item', random.randint(0, NUM_ITEMS - 1), ['i_stock'])
+        self.system.query('item', random.randint(0, NUM_ITEMS - 1), ['I_STOCK'])
 
         self.system.query('address', str(random.randint(0, NUM_ADDRESSES - 1)), ['ADDR_CO_ID'])
 
@@ -54,12 +54,12 @@ class Test:
 
         self.system.query('orders',  random.randint(0, NUM_ORDERS - 1), ['key'])
         
-        self.system.query('shopping_cart', str(random.randint(0, NUM_SHOPPING_CARTS)), ['scl_qty'])
+        self.system.query('shopping_cart', str(random.randint(0, NUM_ORDERS - 1)), ['SCL_QTY'])
         #UNCERTAIN ON NUMBER
 
-        self.system.query('shopping_cart', str(random.randint(0, NUM_SHOPPING_CARTS)), [])
+        self.system.query('shopping_cart', str(random.randint(0, NUM_ORDERS - 1)), [])
         #UNCERTAIN
-        self.system.query('shopping_cart', str(random.randint(0, NUM_SHOPPING_CARTS)), [])
+        self.system.query('shopping_cart', str(random.randint(0, NUM_ORDERS - 1)), [])
         #UNCERTAIN
 
     def update(self):
@@ -72,18 +72,25 @@ class Test:
 
         self.system.update('customer', str(random.randint(0, NUM_CUSTOMERS - 1)), {'C_LOGIN': "'" + "2014-03-04 01:00:00" + "'", 'C_EXPIRATION': "'" + "2014-03-04 01:00:00" + "'"})
 
-        self.system.update('shopping_cart_line', str(random.randint(0, NUM_SHOPPING_CARTS)), {'scl_qty': str(1)})
+        i = random.randint(0, NUM_ORDERS - 1)
+        timestamp = "'" + "2014-04-05 01:00:00" + "'"
+        self.system.update('shopping_cart_line', str(random.randint(0, NUM_SHOPPING_CARTS)), {'SCL_QTY': str(i)})
 
-        self.system.update('shopping_cart', str(random.randint(0, NUM_SHOPPING_CARTS)), {'sc_time': str(1)})
+        self.system.update('shopping_cart', str(random.randint(0, NUM_SHOPPING_CARTS)), {'SC_TIME': timestamp})
 
 
     def insert(self):
-        self.system.insert('shopping_cart', {'skey': str(random.randint(0, NUM_SHOPPING_CARTS)), 'sc_time': str(1)})
+        i = random.randint(0, NUM_ITEMS - 1)
+        timestamp = "'" + "2014-04-05 01:00:00" + "'"
+        self.system.insert('shopping_cart', {'key': str(i), 'SC_TIME': timestamp})
 
 
-        self.system.insert('customer', {'key': str(random.randint(0, NUM_CUSTOMERS)), 'C_UNAME': str(1), 'c_passwd': str(1), 'C_FNAME': str(1), 'C_LNAME': str(1), 'C_ADDR_ID': str(1), 'C_PHONE': str(1), 'C_EMAIL': str(1), 'C_SINCE': str(1), 'C_LAST_LOGIN': str(1), 'C_LOGIN': str(1), 'C_EXPIRATION': str(1), 'C_DISCOUNT': str(1), 'C_BALANCE': str(1), 'C_YTD_PMT': str(1), 'C_BIRTHDATE': str(1), 'C_DATA': str(1)})
+        self.system.insert('customer', {'key': str(random.randint(0, NUM_CUSTOMERS)), 'C_UNAME': str(1), 'C_PASSWD': str(1), 'C_FNAME': str(1), 'C_LNAME': str(1), 'C_ADDR_ID': str(1), 'C_PHONE': str(1), 'C_EMAIL': str(1), 'C_SINCE': str(1), 'C_LAST_LOGIN': str(1), 'C_LOGIN': str(1), 'C_EXPIRATION': str(1), 'C_DISCOUNT': str(1), 'C_BALANCE': str(1), 'C_YTD_PMT': str(1), 'C_BIRTHDATE': str(1), 'C_DATA': str(1)})
 
-        self.system.insert('order_line', {'cl_id': str(1), 'cl_key': str(1), 'cl_i_id': str(1), 'cl_qty': str(1), 'cl_discount': str(1), 'cl_comments': str(1)})
+        i = random.randint(0, NUM_ORDERS - 1)
+        num = str(i)
+        x = "'" + id + "'"
+        self.system.insert('order_line', {'key': num, 'OL_O_ID': num, 'OL_I_ID': num, 'OL_QTY': num, 'OL_DISCOUNT': num, 'OL_COMMENTS': x})
 
         self.system.insert('cc_xacts', {'key': str(1), 'CX_TYPE': str(1), 'CX_NUM': str(1), 'CX_NAME': str(1), 'CX_EXPIRE': str(1), 'CX_XACT_AMT': str(1), 'CX_XACT_DATE': str(1), 'CX_CO_ID': str(1)})
 

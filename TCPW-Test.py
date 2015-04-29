@@ -20,7 +20,7 @@ def createTables(s):
 
     s.initialize('country', {'key': 'bigint', 'CO_NAME': 'varchar(50)', 'CO_EXCHANGE': 'bigint', 'CO_CURRENCY': 'varchar(18)'})
     
-    s.initialize('customer', {'key': 'bigint', 'C_UNAME': 'varchar(20)', 'c_PASSSWD': 'varchar(20)', 'C_FNAME': 'varchar(17)', 'c_LNAME': 'varchar(17)', 'C_ADDR_ID': 'bigint', 'C_PHONE': 'varchar(18)', 'C_EMAIL': 'varchar(50)', 'C_SINCE': 'date', 'C_LAST_LOGIN': 'date', 'C_LOGIN': 'timestamp', 'C_EXPIRATION': 'timestamp', 'C_DISCOUNT': 'real', 'C_BALANCE': 'bigint', 'C_YTD_PMT': 'bigint', 'C_BIRTHDATE': 'date', 'c_DATA': 'varchar(510)'})
+    s.initialize('customer', {'key': 'bigint', 'C_UNAME': 'varchar(20)', 'C_PASSSWD': 'varchar(20)', 'C_FNAME': 'varchar(17)', 'C_LNAME': 'varchar(17)', 'C_ADDR_ID': 'bigint', 'C_PHONE': 'varchar(18)', 'C_EMAIL': 'varchar(50)', 'C_SINCE': 'date', 'C_LAST_LOGIN': 'date', 'C_LOGIN': 'timestamp', 'C_EXPIRATION': 'timestamp', 'C_DISCOUNT': 'real', 'C_BALANCE': 'bigint', 'C_YTD_PMT': 'bigint', 'C_BIRTHDATE': 'date', 'C_DATA': 'varchar(510)'})
 
     s.initialize('item', {'key': 'bigint', 'I_TITLE': 'varchar(60)', 'I_A_ID': 'bigint', 'I_PUB_DATE': 'date', 'I_PUBLISHER': 'varchar(60)', 'I_SUBJECT': 'varchar(60)', 'I_DESC': 'varchar(280)', 'I_RELATED1': 'bigint', 'I_RELATED2': 'bigint', 'I_RELATED3': 'bigint', 'I_RELATED4': 'bigint', 'I_RELATED5': 'bigint', 'I_THUMBNAIL': 'varchar(40)', 'I_IMAGE': 'varchar(40)', 'I_SRP': 'bigint', 'I_COST': 'bigint', 'I_AVAIL': 'date', 'I_STOCK': 'bigint', 'I_ISBN': 'varchar(13)', 'I_PAGE':'bigint', 'I_BACKING': 'varchar(15)', 'I_DIMENSTIONS': 'varchar(25)'})
 
@@ -78,7 +78,7 @@ def populateCustomerTable(s):
         x = "'" + num + "'"
         date = "'" + "2014-03-04" + "'"
         timestamp = "'" + "2014-03-04 01:00:00" + "'"
-        l.append({'key': num, 'C_UNAME': x, 'c_PASSSWD': x, 'C_FNAME': x, 'c_LNAME': x, 'C_ADDR_ID': num, 'C_PHONE': x, 'C_EMAIL': x, 'C_SINCE': date, 'C_LAST_LOGIN': date, 'C_LOGIN': timestamp, 'C_EXPIRATION': timestamp, 'C_DISCOUNT': num, 'C_BALANCE': num, 'C_YTD_PMT': num, 'C_BIRTHDATE': date, 'c_DATA': x})
+        l.append({'key': num, 'C_UNAME': x, 'C_PASSSWD': x, 'C_FNAME': x, 'C_LNAME': x, 'C_ADDR_ID': num, 'C_PHONE': x, 'C_EMAIL': x, 'C_SINCE': date, 'C_LAST_LOGIN': date, 'C_LOGIN': timestamp, 'C_EXPIRATION': timestamp, 'C_DISCOUNT': num, 'C_BALANCE': num, 'C_YTD_PMT': num, 'C_BIRTHDATE': date, 'C_DATA': x})
     s.load('customer', l)
     print 'done'
 

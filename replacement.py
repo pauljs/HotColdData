@@ -1,7 +1,7 @@
 import happybase
 import json
 from DB import DB, DB_NAME, Hbase
-from LRUQueue import LRUQueue
+from replacementAlgorithms import LRUQueue
 
 '''
 Main Client Access Point
@@ -24,7 +24,9 @@ class System:
         try:
             self.cold.get_connection().create_table(name, {'default':dict()})
         except happybase.hbase.ttypes.AlreadyExists:
-            pass
+            self.cold.get_connection().disable_table(name)
+            self.cold.get_connection().delete_table(name)
+            self.cold.get_connection().create_table(name, {'default':dict()})
         self.hot.cursor().execute("drop table if exists " + name + ";")
         create_table = "create table " + name + "("
         for key in cols:

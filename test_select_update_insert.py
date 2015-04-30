@@ -18,8 +18,8 @@ class Test:
     def select(self):
         #self.system.query('customer',  random.randint(0, NUM_CUSTOMERS - 1), ['C_FNAME', 'C_LNAME'])
 
-        for i in range(0 , 100000):
-            self.system.query('address', str(random.randint(0, NUM_ADDRESSES / 1000)), ['ADDR_CO_ID'])
+        for i in range(0 , 10000):
+            self.system.query('address', str(random.randint(0, NUM_ADDRESSES  - 1)), ['ADDR_CO_ID'])
             #self.system.query('item', str(random.randint(0, NUM_ITEMS / 100)), ['key', 'I_THUMBNAIL'])
             #self.system.query('item', str(random.randint(0, 1)), ['key', 'I_THUMBNAIL'])
 
@@ -79,30 +79,43 @@ class Test:
         num = str(i)
         x = "'" + num + "'"
         date = "'" + "2014-08-03" + "'"
-        self.system.update('item', num, {'I_COST': x, 'I_IMAGE': x, 'I_THUMBNAIL': x, 'I_PUB_DATE': date, 'I_RELATED1': str(i+1), 'I_RELATED2': str(i+2), 'I_RELATED3': str(i+3), 'I_RELATED4': str(i+4), 'I_RELATED5': str(i+5)})
+        for i in range(0, 50000):
+            self.system.update('item', num, {'I_COST': x, 'I_IMAGE': x, 'I_THUMBNAIL': x, 'I_PUB_DATE': date, 'I_RELATED1': str(i+1), 'I_RELATED2': str(i+2), 'I_RELATED3': str(i+3), 'I_RELATED4': str(i+4), 'I_RELATED5': str(i+5)})
 
 
         #self.system.update('customer', str(random.randint(0, NUM_CUSTOMERS - 1)), {'C_LOGIN': "'" + "2014-03-04 01:00:00" + "'", 'C_EXPIRATION': "'" + "2014-03-04 01:00:00" + "'"})
-
+        '''
         i = random.randint(0, NUM_ORDERS - 1)
         timestamp = "'" + "2014-04-05 01:00:00" + "'"
         self.system.update('shopping_cart_line', str(random.randint(0, NUM_ORDERS - 1)), {'SCL_QTY': str(i)})
 
         self.system.update('shopping_cart', str(random.randint(0, NUM_ORDERS - 1)), {'SC_TIME': timestamp})
-
+        '''
 
     def insert(self):
+        '''
         i = random.randint(0, NUM_ITEMS - 1)
         date = "'" + "2014-04-05" + "'"
         timestamp = "'" + "2014-04-05 01:00:00" + "'"
         self.system.insert('shopping_cart', {'key': str(i), 'SC_TIME': timestamp})
-
+        '''
 
         #self.system.insert('customer', {'key': str(random.randint(0, NUM_CUSTOMERS)), 'C_UNAME': str(1), 'C_PASSWD': str(1), 'C_FNAME': str(1), 'C_LNAME': str(1), 'C_ADDR_ID': str(1), 'C_PHONE': str(1), 'C_EMAIL': str(1), 'C_SINCE': date, 'C_LAST_LOGIN': date, 'C_LOGIN': timestamp, 'C_EXPIRATION': timestamp, 'C_DISCOUNT': str(1), 'C_BALANCE': str(1), 'C_YTD_PMT': str(1), 'C_BIRTHDATE': date, 'C_DATA': str(1)})
+        '''for i in xrange(NUM_ITEMS, NUM_ITEMS + 100000):
+            num = str(i)
+            x = "'" + num + "'"
+            date = "'" + "2014-08-03" + "'"
+            self.system.insert('item',{'key': num, 'I_TITLE': x, 'I_A_ID': num, 'I_PUB_DATE': date, 'I_PUBLISHER': x, 'I_SUBJECT': x, 'I_DESC': x, 'I_RELATED1': str(i+1), 'I_RELATED2': str(i+2), 'I_RELATED3': str(i+3), 'I_RELATED4': str(i+4), 'I_RELATED5': str(i+5), 'I_THUMBNAIL': x, 'I_IMAGE': x, 'I_SRP': num, 'I_COST': num, 'I_AVAIL': date, 'I_STOCK': num, 'I_ISBN': x, 'I_PAGE': num, 'I_BACKING': x, 'I_DIMENSTIONS': x})'''
+        for i in xrange(NUM_ADDRESSES, NUM_ADDRESSES + 1000):
+            num = str(i)
+            x = "'" + num + "'"
+            self.system.insert('address', {'key': num, 'ADDR_STREET1': x, 'ADDR_STREET2': x, 'ADDR_CITY': x, 'ADDR_STATE': x, 'ADDR_ZIP': x, 'ADDR_CO_ID': num})
 
+        '''
         i = random.randint(0, NUM_ORDERS - 1)
         num = str(i)
         x = "'" + num + "'"
         self.system.insert('order_line', {'key': num, 'OL_O_ID': num, 'OL_I_ID': num, 'OL_QTY': num, 'OL_DISCOUNT': num, 'OL_COMMENTS': x})
 
         #self.system.insert('cc_xacts', {'key': str(1), 'CX_TYPE': str(1), 'CX_NUM': str(1), 'CX_NAME': str(1), 'CX_EXPIRE': date, 'CX_XACT_AMT': str(1), 'CX_XACT_DATE': str(1), 'CX_CO_ID': str(1)})
+        ''' 

@@ -171,7 +171,7 @@ class ClockStaticQueue(ReplacementQueue):
     def enqueue(self, id):
         item = (-1, -1)
         if(self.contains(id)):
-            return item
+            return item[1]
         elif(self.isFull()):
             nextEmptyIndex = self.queueTracker.get()
             self.clock[nextEmptyIndex] = (1, id)
@@ -185,7 +185,7 @@ class ClockStaticQueue(ReplacementQueue):
                     break
                 self.clock[self.hand] = (0, self.clock[self.hand][1])
                 self.incrementHand()
-            item = self.clock[self.hand][1]
+            item = self.clock[self.hand]
             self.clock[self.hand] = (1, id)
             self.incrementHand()
         return item[1]
@@ -237,7 +237,7 @@ class ClockDynamicQueue(ReplacementQueue):
     def enqueue(self, id):
         item = (-1, -1)
         if(self.contains(id)):
-            return item
+            return item[1]
         elif(not self.isFull()):
             self.clock.append((1, id))
         else:
@@ -245,7 +245,7 @@ class ClockDynamicQueue(ReplacementQueue):
             while(self.clock[self.hand][0] == 1):
                 self.clock[self.hand] = (0, self.clock[self.hand][1])
                 self.incrementHand()
-            item = self.clock[self.hand][1]
+            item = self.clock[self.hand]
             self.clock[self.hand] = (1, id)
             self.incrementHand()
         return item[1]
@@ -318,7 +318,7 @@ class RandomQueue(ReplacementQueue):
 
 '''Used for Testing Purposes'''
 def main():
-    queue = FIFOQueue(4)
+    queue = ClockStaticQueue(4)
     print "\n"
     print queue.printContents() 
     queue.enqueue(1)

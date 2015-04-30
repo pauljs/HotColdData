@@ -5,7 +5,7 @@ import time
 
 def main():
     s = System()
-    s.setReplacementAlgorithm('CLOCK2', 58)
+    s.setReplacementAlgorithm('LRU', 580)
 
     print 'begining system test'
     system_start = time.time()
@@ -14,13 +14,13 @@ def main():
     t1.select()
     system_read_end = time.time()
     print 'System read test ended in: ' + str(system_read_end - system_read_start)
-    system_write_start = time.time()
+    '''system_write_start = time.time()
     t1.insert()
     t1.update()
     system_write_end = time.time()
     print 'System write test ended in: ' + str(system_write_end - system_write_start)
     system_end = time.time()
-    print 'System test ended in: ' + str(system_end - system_start)
+    print 'System test ended in: ' + str(system_end - system_start)'''
 
 
 
@@ -34,13 +34,13 @@ def main():
     t2.select()
     hbase_read_end = time.time()
     print 'Hbase read test ended in: ' + str(hbase_read_end - hbase_read_start)
-    hbase_write_start = time.time()
+    '''hbase_write_start = time.time()
     t2.insert()
     t2.update()
     hbase_write_end = time.time()
     print 'Hbase write test ended in: ' + str(hbase_write_end - hbase_write_start)
     hbase_end = time.time()
-    print 'Hbase test ended in: ' + str(hbase_end - hbase_start)
+    print 'Hbase test ended in: ' + str(hbase_end - hbase_start)'''
 
 if __name__ == '__main__':
     main()

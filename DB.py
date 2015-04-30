@@ -2,8 +2,8 @@ import psycopg2
 import sqlite3
 import memcache
 import happybase
-
-DB_NAME = 'hot_cold_data'
+'''sean's DB called: hot_cold_data'''
+DB_NAME = 'pauljs_hot_cold_data'
 
 '''
 postgreSQL hooks
@@ -37,7 +37,7 @@ class DB:
         if not data:
             raise Exception('Error:cannot insert nothing')
         q = "insert into " + table + " VALUES ("
-        for d in data:
+        for d in sorted(data):
             q += data[d] + ' ,'
         q = q[:len(q)-1] + ');'
         self.cur.execute(q)
@@ -45,7 +45,7 @@ class DB:
     def select(self, table, key, cols):
         q = 'Select '
         if not cols:
-            q += '*'
+            q += '* from ' + table + ' where key = ' + key + ';'
         else:
             for c in cols:
                 q += c + ','

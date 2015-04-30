@@ -18,12 +18,13 @@ class Test:
     def select(self):
         #self.system.query('customer',  random.randint(0, NUM_CUSTOMERS - 1), ['C_FNAME', 'C_LNAME'])
 
-        for i in range(0 , 1000):
-            self.system.query('item', str(random.randint(0, 1)), ['key', 'I_THUMBNAIL'])
-            self.system.query('item', str(random.randint(0, 1)), ['key', 'I_THUMBNAIL'])
+        for i in range(0 , 100000):
+            self.system.query('address', str(random.randint(0, NUM_ADDRESSES / 1000)), ['ADDR_CO_ID'])
+            #self.system.query('item', str(random.randint(0, NUM_ITEMS / 100)), ['key', 'I_THUMBNAIL'])
+            #self.system.query('item', str(random.randint(0, 1)), ['key', 'I_THUMBNAIL'])
 
-            self.system.query('item', str(random.randint(0, 1)), ['key', 'i_title'])
-            self.system.query('item', str(random.randint(0, 1)), [])
+            #self.system.query('item', str(random.randint(0, 1)), ['key', 'i_title'])
+            #self.system.query('item', str(random.randint(0, 1)), [])
         #self.system.query('author', str(random.randint(0, NUM_AUTHORS)), ['A_FNAME', 'A_LNAME'])
 
         #self.system.query('author', str(random.randint(0, NUM_AUTHORS)), []) #[] is for select *

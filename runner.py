@@ -5,7 +5,7 @@ import time
 
 def main():
     s = System()
-    s.setReplacementAlgorithm('LRU', 1000)
+    s.setReplacementAlgorithm('CLOCK2', 58)
 
     print 'begining system test'
     system_start = time.time()

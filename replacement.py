@@ -112,8 +112,6 @@ class System:
         #end testing purposes
         
         if not self.replacement_algorithm.contains(key):
-            sys.stdout.write('miss')
-            sys.stdout.flush()
             val = self.replacement_algorithm.enqueue(key) #returns -1 if the queue is full, the key of the data if not
             if val != -1:
                 self.hot.delete(table, str(val))

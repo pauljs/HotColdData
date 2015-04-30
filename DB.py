@@ -95,3 +95,6 @@ class Hbase:
 
     def select(self, table, key):
         return self.table(table).row(key)
+
+    def scan(self, table):
+        return self.table(table).scan()

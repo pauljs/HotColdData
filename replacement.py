@@ -132,6 +132,12 @@ class System:
             print data
             self.hot.insert(table, data)
             self.hot.commit()
+
+    '''
+
+    '''
+    def scan(self, table):
+        return self.cold.scan(table)
     '''
     strip column family name from keys
     @param data: dictionary of unstripped column name to values
@@ -153,6 +159,7 @@ def main():
     print s.query('test', '25', ['key', 'text'])
     s.delete('test', '25')
     s.update('test', '26', {'text': "'whats good'"})
+    print s.scan('test')
 
 if __name__ == '__main__':
     main()

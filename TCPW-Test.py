@@ -22,8 +22,6 @@ def createTables(s):
     
     s.initialize('customer', {'key': 'bigint', 'C_UNAME': 'varchar(20)', 'C_PASSSWD': 'varchar(20)', 'C_FNAME': 'varchar(17)', 'C_LNAME': 'varchar(17)', 'C_ADDR_ID': 'bigint', 'C_PHONE': 'varchar(18)', 'C_EMAIL': 'varchar(50)', 'C_SINCE': 'date', 'C_LAST_LOGIN': 'date', 'C_LOGIN': 'timestamp', 'C_EXPIRATION': 'timestamp', 'C_DISCOUNT': 'real', 'C_BALANCE': 'bigint', 'C_YTD_PMT': 'bigint', 'C_BIRTHDATE': 'date', 'C_DATA': 'varchar(510)'})
 
-    s.initialize('item', {'key': 'bigint', 'I_TITLE': 'varchar(60)', 'I_A_ID': 'bigint', 'I_PUB_DATE': 'date', 'I_PUBLISHER': 'varchar(60)', 'I_SUBJECT': 'varchar(60)', 'I_DESC': 'varchar(280)', 'I_RELATED1': 'bigint', 'I_RELATED2': 'bigint', 'I_RELATED3': 'bigint', 'I_RELATED4': 'bigint', 'I_RELATED5': 'bigint', 'I_THUMBNAIL': 'varchar(40)', 'I_IMAGE': 'varchar(40)', 'I_SRP': 'bigint', 'I_COST': 'bigint', 'I_AVAIL': 'date', 'I_STOCK': 'bigint', 'I_ISBN': 'varchar(13)', 'I_PAGE':'bigint', 'I_BACKING': 'varchar(15)', 'I_DIMENSTIONS': 'varchar(25)'})
-
     s.initialize('cc_xacts', {'key': 'bigint', 'CX_TYPE': 'varchar(10)', 'CX_NUM': 'varchar(20)', 'CX_NAME': 'varchar(30)', 'CX_EXPIRE': 'date', 'CX_AUTH_ID': 'varchar(15)', 'CX_XACT_AMT': 'bigint', 'CX_XACT_DATE': 'date', 'CX_CO_ID': 'bigint'})
 
     s.initialize('order_line', {'key': 'bigint', 'OL_O_ID': 'bigint', 'OL_I_ID': 'bigint', 'OL_QTY': 'bigint', 'OL_DISCOUNT': 'bigint', 'OL_COMMENTS': 'varchar(110)'})
@@ -33,6 +31,8 @@ def createTables(s):
     s.initialize('shopping_cart', {'key': 'bigint', 'SC_TIME': 'timestamp'})
 
     s.initialize('shopping_cart_line', {'key': 'bigint', 'SCL_QTY': 'bigint', 'SCL_I_ID': 'bigint'})
+
+    s.initialize('item', {'key': 'bigint', 'I_TITLE': 'varchar(60)', 'I_A_ID': 'bigint', 'I_PUB_DATE': 'date', 'I_PUBLISHER': 'varchar(60)', 'I_SUBJECT': 'varchar(60)', 'I_DESC': 'varchar(280)', 'I_RELATED1': 'bigint', 'I_RELATED2': 'bigint', 'I_RELATED3': 'bigint', 'I_RELATED4': 'bigint', 'I_RELATED5': 'bigint', 'I_THUMBNAIL': 'varchar(40)', 'I_IMAGE': 'varchar(40)', 'I_SRP': 'bigint', 'I_COST': 'bigint', 'I_AVAIL': 'date', 'I_STOCK': 'bigint', 'I_ISBN': 'varchar(13)', 'I_PAGE':'bigint', 'I_BACKING': 'varchar(15)', 'I_DIMENSTIONS': 'varchar(25)'})
 
     print 'done'
 
@@ -127,12 +127,14 @@ def main():
     s = System()
     s.setReplacementAlgorithm('LRU', 1000)
     createTables(s)
+    
     populateAddressTable(s)
     populateAuthorTable(s)
     populateCountryTable(s)
     populateCustomerTable(s)
-    populateItemTable(s)
     populateCC_XACTSAndOrders(s)
+    
+    populateItemTable(s)
     print 'Fine'
 
 if __name__ == '__main__':

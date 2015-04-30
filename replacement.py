@@ -1,7 +1,7 @@
 import happybase
 import json
 from DB import DB, DB_NAME, Hbase
-from replacementAlgorithms import LRUQueue
+from replacementAlgorithms import LRUQueue, FIFOQueue, ClockStaticQueue, ClockDynamicQueue, RandomQueue
 import sys
 
 '''
@@ -46,6 +46,13 @@ class System:
             if 'key' not in data:
                 raise Exception('Error: Must define a key')
             self.cold.insert(table, data['key'], data)
+
+    '''
+    Clears Cache
+    '''
+    def clear(self):
+        self.replacement_algorithm.printContents()
+        self.replacement_algorithm.clear()
 
     '''
     Set which replacement algorithm to use

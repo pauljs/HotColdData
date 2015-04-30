@@ -87,7 +87,11 @@ class QueueContain(Queue):
 class LRUQueue:
 	
     def __init__(self, maxsize):
+        self.maxsize = maxsize
         self.queue = PriorityQueueContain(maxsize)
+
+    def clear(self):
+        self.queue = PriorityQueueContain(self.maxsize)
 
     def isFull(self):
         return self.queue.full()
@@ -114,7 +118,11 @@ class LRUQueue:
 class FIFOQueue(ReplacementQueue):
 
     def __init__(self, maxsize):
+        self.maxsize = maxsize
         self.queue = QueueContain(maxsize)
+
+    def clear(self):
+        self.queue = QueueContain(self.maxsize)
 
     def isFull(self):
         return self.queue.full()
@@ -145,6 +153,15 @@ class ClockStaticQueue(ReplacementQueue):
         self.clock = [None] * maxsize
         self.hand = 0
 
+    def clear(self):
+        maxsize = self.maxsize
+        self.queueTracker = Queue(maxsize)
+        for i in range (0, maxsize):
+            self.queueTracker.put(i)
+        self.clock = [None] * maxsize
+        self.hand = 0
+
+
     def isFull(self):
         return not self.queueTracker.empty()
 
@@ -153,15 +170,15 @@ class ClockStaticQueue(ReplacementQueue):
 
     def enqueue(self, id):
         item = (-1, -1)
-        if(self.isFull()):
+        if(self.contains(id)):
+            return item
+        elif(self.isFull()):
             nextEmptyIndex = self.queueTracker.get()
             self.clock[nextEmptyIndex] = (1, id)
-        elif(self.contains(id)):
-            pass
         else:
             '''clock is full'''
             while(True):
-                if(self.clock[self.hand] == None):
+                if(self.clock[self.hand] is None):
                     self.incrementHand()
                     continue
                 if(self.clock[self.hand][0] == 0):
@@ -183,6 +200,15 @@ class ClockStaticQueue(ReplacementQueue):
                 return True
         return False
 
+    def contains(self, id):
+        for tuple in self.clock:
+            if(tuple is None):
+                continue
+            if(tuple[1] == id):
+                tuple = (1, id)
+                return True
+        return False
+
     def printContents(self):
         print "Hand: " + str(self.hand)
         for tuple in self.clock:
@@ -192,6 +218,10 @@ class ClockDynamicQueue(ReplacementQueue):
 
     def __init__(self, maxsize):
         self.maxsize = maxsize
+        self.clock = []
+        self.hand = 0
+
+    def clear(self):
         self.clock = []
         self.hand = 0
 
@@ -206,10 +236,10 @@ class ClockDynamicQueue(ReplacementQueue):
 
     def enqueue(self, id):
         item = (-1, -1)
-        if(not self.isFull()):
+        if(self.contains(id)):
+            return item
+        elif(not self.isFull()):
             self.clock.append((1, id))
-        elif(self.contains(id)):
-            pass
         else:
             '''clock is full'''
             while(self.clock[self.hand][0] == 1):
@@ -231,8 +261,9 @@ class ClockDynamicQueue(ReplacementQueue):
 
     def contains(self, id):
         for tuple in self.clock:
+            if(tuple is None):
+                continue
             if(tuple[1] == id):
-                tuple = (1, id)
                 return True
         return False
 
@@ -247,15 +278,18 @@ class RandomQueue(ReplacementQueue):
         self.maxsize = maxsize
         self.clock = []
 
+    def clear(self):
+        self.clock = []
+
     def isFull(self):
         return len(self.clock) == self.maxsize
 
     def enqueue(self, id):
         item = -1
-        if(not self.isFull()):
+        if(self.contains(id)):
+            return item
+        elif(not self.isFull()):
             self.clock.append(id)
-        elif(self.contains(id)):
-            pass
         else:
             '''clock is full'''
             removalIndex = random.randint(0, self.maxsize - 1)

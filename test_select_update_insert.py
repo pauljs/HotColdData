@@ -18,7 +18,7 @@ class Test:
     def select(self):
         #self.system.query('customer',  random.randint(0, NUM_CUSTOMERS - 1), ['C_FNAME', 'C_LNAME'])
 
-        for i in range(0 , 400000):
+        for i in range(0 , 100000):
             self.system.query('address', str(random.randint(0, NUM_ADDRESSES  / 1000)), ['ADDR_CO_ID'])
             #self.system.query('item', str(random.randint(0, NUM_ITEMS / 100)), ['key', 'I_THUMBNAIL'])
             #self.system.query('item', str(random.randint(0, 1)), ['key', 'I_THUMBNAIL'])
@@ -65,7 +65,7 @@ class Test:
         #self.system.query('address', str(random.randint(0, NUM_ADDRESSES - 1)), ['key'])
 
         #self.system.query('orders',  str(random.randint(0, NUM_ORDERS - 1)), ['key'])
-        
+       
         #self.system.query('shopping_cart_line', str(random.randint(0, NUM_ORDERS - 1)), ['SCL_QTY'])
         #UNCERTAIN ON NUMBER
 
